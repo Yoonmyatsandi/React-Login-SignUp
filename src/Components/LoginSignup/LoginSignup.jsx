@@ -13,6 +13,7 @@ export default function LoginSignup() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showButtons, setShowButtons] = useState(true);
 
   const validateForm = () => {
     let isValid = true;
@@ -45,7 +46,9 @@ export default function LoginSignup() {
     return isValid;
   };
 
-  const handleFormSubmit = () => {
+  const handleFormSubmit = (e) => {
+    console.log("handleFormSubmit function called");
+    e.preventDefault();
     const isValid = validateForm();
 
     if (isValid) {
@@ -53,9 +56,8 @@ export default function LoginSignup() {
         click === "Sign Up" ? "Registered" : "Logged in"
       } successfully!`;
       alert(successMessage);
-
-      console.log("Form submitted successfully!");
       setIsAuthenticated(true);
+      console.log("isAuthenticated:", true);
     } else {
       alert("Form validation failed. Please check your inputs.");
     }
@@ -116,29 +118,27 @@ export default function LoginSignup() {
           </div>
         )}
 
-        <div className="submit">
-          {click === "Login" && !isAuthenticated && (
-            <div className="submit-btn" onClick={handleFormSubmit}>
-              Login
-            </div>
-          )}
-          {click === "Sign Up" && !isAuthenticated && (
-            <div className="submit-btn" onClick={handleFormSubmit}>
-              Sign Up
-            </div>
-          )}
-        </div>
+        <form onSubmit={handleFormSubmit}>
+          <div className="submit">
+            {(click === "Login" || click === "Sign Up") && (
+              <button className="submit-btn" type="submit">
+                {click === "Login" ? "Login" : "Sign Up"}
+              </button>
+            )}
+          </div>
+        </form>
+
         <div
           className="toggle-mode"
           onClick={() => setClick(click === "Login" ? "Sign Up" : "Login")}
         >
           {click === "Login" ? (
             <span className="login-text">
-              Don't have an account? <u>Login</u>
+              Don't have an account? <u>Sign Up</u>
             </span>
           ) : (
             <span className="signup-text">
-              Already have an account? <u>Sign Up</u>
+              Already have an account? <u>Login</u>
             </span>
           )}
         </div>
